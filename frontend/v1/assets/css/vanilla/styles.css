@@ -1,0 +1,743 @@
+/* ============================================================
+   PORTFOLIO — MASTER STYLESHEET
+   Replace all separate CSS link tags with just this one file.
+
+   Sections:
+     1.  Design Tokens
+     2.  Reset & Base
+     3.  Typography
+     4.  Layout
+     5.  Toggle
+     6.  Header
+     7.  About
+     8.  Socials
+     9.  Projects
+     10. Hobbies
+     11. Navbar / Footer
+     12. Responsive Breakpoints
+   ============================================================ */
+
+
+/* ── 1. DESIGN TOKENS ──────────────────────────────────────── */
+:root {
+    /* palette */
+    --bg-main: #dbdee2;
+    --bg-elevated: #dbdee2b7;
+    --text-primary: #333F44;
+    --text-secondary: rgb(75, 75, 75);
+
+    --accent: #37AA9C;
+    --accent-transparent: #37AA9C1f;
+
+    /* layout */
+    --content-width: 44rem;
+    /* ~700 px — 2× the readable mobile column */
+    --section-gap: 2.5rem;
+    --aside-min: 5.5rem;
+
+    /* cards */
+    --card-bg: linear-gradient(180deg, var(--bg-elevated), var(--accent-transparent));
+    --card-border: var(--accent);
+    --card-outline: var(--accent-transparent);
+
+    --bg-social-chip: linear-gradient(180deg, var(--bg-elevated)1%, var(--accent-transparent));
+    /* navbar */
+    --nav-width: 20rem;
+    --nav-height: 4rem;
+
+    --font-primary: "Fira Sans", sans-serif;
+    --font-mono: "Sono", monospace;
+}
+
+.dark {
+    --bg-main: #333F44;
+    --bg-elevated: #333F44b7;
+    --text-primary: #dbdee2;
+    --text-secondary: rgb(150, 150, 150);
+
+
+    --card-bg: linear-gradient(180deg, var(--bg-elevated), var(--accent-transparent));
+
+    --card-border: var(--accent);
+    --card-outline: var(--accent-transparent);
+
+    --bg-social-chip: linear-gradient(180deg, var(--bg-elevated)1%, var(--accent-transparent));
+
+
+}
+
+
+/* ── 2. RESET & BASE ───────────────────────────────────────── */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-primary);
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    line-height: 1.6;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    /* horizontal breathing room on desktop; removed on mobile */
+    padding: 0 1.25rem;
+    overflow-y: auto;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+svg {
+    display: block;
+    flex-shrink: 0;
+}
+
+
+/* ── 3. TYPOGRAPHY ─────────────────────────────────────────── */
+h1,
+h2 {
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+}
+
+/* route labels (e.g. /about, /projects) */
+.routes {
+    font-family: var(--font-mono);
+
+    font-size: 0.95rem;
+    font-weight: 400;
+    letter-spacing: 0.05rem;
+    color: var(--accent);
+    min-width: var(--aside-min);
+    padding-top: 0.15rem;
+    letter-spacing: 0.01em;
+}
+
+
+/* ── 4. LAYOUT ─────────────────────────────────────────────── */
+main {
+    width: 100%;
+    max-width: var(--content-width);
+    /* space for fixed navbar */
+    padding-bottom: calc(var(--nav-height) + 2.5rem);
+}
+
+.page-grid {
+    display: flex;
+    flex-direction: column;
+    padding-top: 1.25rem;
+}
+
+/* every section shares this flex row */
+.sect {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: var(--section-gap);
+}
+
+/* spacer div inside header that mirrors .routes width */
+.aside {
+    min-width: var(--aside-min);
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* ── 5. TOGGLE — 80s vertical stick switch ─────────────────── */
+
+/*
+  Up   (unchecked) = light theme — teal lever at top
+  Down (checked)   = dark theme  — lever slides down, slot darkens
+*/
+.toggle {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 0.5rem;
+}
+
+.switch {
+    font-size: 17px;
+    position: relative;
+    display: inline-block;
+    width: 1em;
+    height: 2.8em;
+    cursor: pointer;
+}
+
+.switch .chk {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* the slot / housing — inset so it looks recessed */
+.slider {
+    position: absolute;
+    inset: 0;
+    border-radius: 6px;
+    background: var(--bg-main);
+    box-shadow:
+        inset 0 3px 8px rgba(0, 0, 0, .6),
+        inset 0 -1px 3px rgba(255, 255, 255, .05);
+    transition: background .4s ease;
+}
+
+/* the lever — wider than the slot, giving the protruding bar look */
+.slider::before {
+    content: '';
+    position: absolute;
+    width: 2.5rem;
+    height: 0.5rem;
+    left: 50%;
+    top: 0.22em;
+    transform: translateX(-50%);
+    border-radius: 5px;
+
+    /* gradient gives it a top-lit 3D look */
+    background: linear-gradient(180deg,
+            color-mix(in srgb, var(--accent) 85%, white) 0%,
+            var(--accent) 40%,
+            color-mix(in srgb, var(--accent) 75%, black) 100%);
+    box-shadow:
+        0 4px 10px rgba(0, 0, 0, .4),
+        0 1px 0 rgba(255, 255, 255, .3) inset;
+    transition: top .38s cubic-bezier(.4, 0, .2, 1), background .4s ease;
+}
+
+/* checked = lever slides DOWN = dark theme */
+.chk:checked+.slider {
+    background: var(--bg-main);
+    box-shadow:
+        inset 0 3px 8px rgba(0, 0, 0, .6),
+        inset 0 -1px 3px rgba(255, 255, 255, .05);
+}
+
+.chk:checked+.slider::before {
+    top: calc(3.2em - 0.9em - 0.22em);
+    background: linear-gradient(180deg,
+            color-mix(in srgb, var(--accent) 85%, white) 0%,
+            var(--accent) 40%,
+            color-mix(in srgb, var(--accent) 75%, black) 100%);
+    box-shadow:
+        0 -4px 10px rgba(0, 0, 0, .45),
+        0 1px 0 rgba(255, 255, 255, .06) inset;
+}
+
+/* ── 6. HEADER ─────────────────────────────────────────────── */
+#header {
+    padding-top: 3.5rem;
+    margin-bottom: 3rem;
+    align-items: center;
+}
+
+.headings {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.headings-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.avatar-img {
+    width: 5.5rem;
+    height: 5.5rem;
+    border-radius: 50%;
+    object-fit: cover;
+    outline: 3px solid var(--accent);
+    outline-offset: 3px;
+    flex-shrink: 0;
+    transition: outline-color .4s ease;
+}
+
+.avatar-img:hover {
+    outline-color: var(--text-secondary);
+}
+
+.name {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 0.05rem;
+}
+
+.title {
+    font-size: 1.1rem;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--text-secondary);
+}
+
+
+/* ── 7. ABOUT ──────────────────────────────────────────────── */
+.paragraphs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.bio-text {
+    font-size: 1.15rem;
+    line-height: 1.5;
+    color: var(--text-primary);
+}
+
+/* inline domain pills: Health · Crypto · AI */
+.bio-pill {
+    display: inline-block;
+    background: var(--bg-elevated);
+    border: 1px solid rgba(13, 148, 136, .35);
+    border-radius: 999px;
+    padding: 0.05rem 0.55rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 0 2px;
+    vertical-align: middle;
+}
+
+
+/* ── 8. SOCIALS ────────────────────────────────────────────── */
+.socials-row {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    flex-wrap: wrap;
+}
+
+.social-chip {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+    background: var(--bg-social-chip);
+    transition: width .3s ease, border-radius .3s ease;
+    box-shadow: 0 0 6px 2px rgba(0, 0, 0, .15);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    flex-shrink: 0;
+}
+
+.social-chip:hover {
+    width: 110px;
+    border-radius: 40px;
+}
+
+.social-chip:active {
+    transform: translate(1px, 1px);
+}
+
+/* 
+.linkedin {
+    background: var(--linkedin-bg);
+}
+
+.github {
+    background: var(--github-bg);
+}
+
+.twitter {
+    background: var(--twitter-bg);
+} */
+
+.social-icons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 38px;
+    transition: padding .3s ease;
+}
+
+.social-chip:hover .social-icons {
+    padding-left: 8px;
+}
+
+.social-svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* force icon fill/stroke to light so it reads on coloured bg */
+.social-svg path {
+    fill: var(--accent);
+}
+
+.social-svg path[stroke] {
+    stroke: var(--bg-elevated);
+    fill: none;
+}
+
+.social-text {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--accent);
+    white-space: nowrap;
+    opacity: 0;
+    max-width: 0;
+    overflow: hidden;
+    padding-right: 0;
+    padding: 3px 0.5rem 0 0.25rem;
+    transition: opacity .2s ease .1s, max-width .3s ease, padding-right .3s ease;
+}
+
+.social-chip:hover .social-text {
+    opacity: 1;
+    max-width: 6rem;
+}
+
+
+/* ── 9. PROJECTS ───────────────────────────────────────────── */
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    width: 100%;
+}
+
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 1rem;
+    min-height: 6rem;
+    border: 1px solid var(--card-border);
+    border-radius: 1rem;
+    background: var(--card-bg);
+    backdrop-filter: blur(1rem);
+    -webkit-backdrop-filter: blur(1rem);
+    overflow: hidden;
+    transition: outline 0s ease-in, transform .2s ease;
+}
+
+.card:hover {
+    outline: 3px solid var(--card-outline);
+    outline-offset: 2px;
+    transform: translateY(-2px);
+}
+
+.card-subtitle {
+    font-size: 0.7rem;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-secondary);
+}
+
+.card-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.card-link {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    opacity: 0.5;
+    transition: opacity .2s ease;
+}
+
+.card-link svg {
+    width: 16px;
+    height: 16px;
+}
+
+.card-link svg path {
+    fill: var(--text-primary);
+}
+
+.card:hover .card-link {
+    opacity: 1;
+}
+
+
+/* ── 10. HOBBIES ───────────────────────────────────────────── */
+.hobbies-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.25rem 0.5rem;
+}
+
+.hobbie-link {
+    --active: 0;
+    display: flex;
+    width: fit-content;
+    height: max-content;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0 0.5rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.hobbie-link:hover {
+    --active: 1;
+    background-color: var(--accent-transparent);
+}
+
+/* icon circle grows on hover via --active */
+.hobbie-svg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: clip;
+    flex-shrink: 0;
+    width: calc(var(--active) * 1.5rem + (1 - var(--active)) * 0.5rem);
+    height: calc(var(--active) * 1.5rem + (1 - var(--active)) * 0.5rem);
+
+    border: 1px solid var(--text-secondary);
+    border-radius: 100px;
+    color: var(--accent);
+    transition: width .5s ease-in-out, height .5s ease-in-out, background-color .5s ease-in-out;
+}
+
+/* arrow slides in from right when not hovered */
+.hobbie-icon {
+    width: 14px;
+    height: 14px;
+    stroke: currentColor;
+    fill: none;
+    flex-shrink: 0;
+    transform: translateX(calc(1rem * (1 - var(--active))));
+    transition: transform .5s ease-in-out;
+}
+
+.hobbie {
+    position: relative;
+    display: inline-block;
+    padding-block: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+/* underline shrinks away on hover */
+.hobbie::before {
+    content: '';
+    position: absolute;
+    bottom: 5px;
+    right: 0;
+    width: calc((1 - var(--active)) * 100%);
+    height: 2px;
+    background-color: var(--accent);
+    border-radius: 9999px;
+    transition: width .5s ease-in-out;
+}
+
+
+/* ── 11. NAVBAR / FOOTER ───────────────────────────────────── */
+#footer {
+    /* fixed at viewport bottom, full width so we can flex-center it */
+    position: fixed;
+    bottom: 1.25rem;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+    /* clicks pass through the wrapper */
+    z-index: 100;
+}
+
+.navbar {
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: var(--nav-width);
+    height: var(--nav-height);
+    padding: 1px 0.75rem 0 0.75rem;
+    border-radius: 1.25rem;
+    border: 1px solid rgba(13, 148, 136, .4);
+    /* refined glassmorphism */
+    background: transparent;
+    backdrop-filter: blur(20px) saturate(80%);
+    -webkit-backdrop-filter: blur(20px) saturate(80%);
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, .12),
+        0 1px 0 var(--bg-elevated) inset;
+    transition: width .35s ease;
+}
+
+.navbar:hover {
+    width: calc(var(--nav-width) + 2.5rem);
+}
+
+.nav-items {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 50%;
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: transform .2s ease;
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.nav-items:hover {
+    transform: translateY(-3px);
+}
+
+.nav-shadow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 90%;
+    border-radius: 50%;
+    transition: background-color .2s ease;
+}
+
+.nav-items:hover .nav-shadow {
+    background-color: rgba(13, 148, 136, .1);
+}
+
+.nav-icons {
+    width: 21px;
+    height: 21px;
+}
+
+/* tooltip appears above the icon */
+.nav-tooltip {
+    position: absolute;
+    bottom: calc(100% + 15px);
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    color: var(--text-secondary);
+    font-size: 0.72rem;
+    font-weight: 500;
+    background: var(--bg-elevated);
+    backdrop-filter: blur(50px) saturate(10%);
+    -webkit-backdrop-filter: blur(20px) saturate(10%);
+    box-shadow:
+        0 8px 15px rgba(0, 0, 0, 0.323),
+        0 1px 0 var(--bg-elevated) inset;
+    padding: 4px 9px;
+    border-radius: 6px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s ease, transform .2s ease;
+    z-index: 10;
+}
+
+/* downward arrow */
+.nav-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 4px solid transparent;
+    border-top-color: var(--bg-main);
+}
+
+.nav-items:hover .nav-tooltip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+
+/* ── 12. RESPONSIVE BREAKPOINTS ────────────────────────────── */
+
+/* ── Tablet (≤ 768 px) */
+@media (max-width: 768px) {
+    :root {
+        --aside-min: 5rem;
+        --nav-width: 17rem;
+    }
+}
+
+/* ── Mobile (≤ 500 px) — full-bleed content */
+@media (max-width: 500px) {
+    :root {
+        --aside-min: 0px;
+        --section-gap: 1.75rem;
+        --nav-width: 18rem;
+        --nav-height: 3.5rem;
+    }
+
+    body {
+        /* remove side padding so content fills the screen edge-to-edge */
+        padding: 0;
+    }
+
+    main {
+        /* small inset so text doesn't touch edges */
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    /* stack route label above content */
+    .sect {
+        flex-direction: column;
+        gap: 0.4rem;
+    }
+
+    .mobile-hidden {
+        display: none;
+    }
+
+
+    .aside {
+        justify-content: flex-start;
+        /* header spacer not needed when stacked  */
+    }
+
+
+    /* header */
+    #header {
+        padding-top: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .headings {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .headings-text {
+        align-items: center;
+    }
+
+    /* projects — 1 column, full width */
+    .cards-container {
+        grid-template-columns: 1fr;
+        margin-top: 5px;
+    }
+
+
+
+    /* hobbies — 2 columns on mobile */
+    .hobbies-grid {
+        grid-template-columns: repeat(2, 1fr);
+        margin-top: -5px;
+    }
+}
