@@ -126,6 +126,7 @@ h2 {
 }
 
 
+
 /* ── 4. LAYOUT ─────────────────────────────────────────────── */
 main {
     width: 100%;
@@ -269,13 +270,13 @@ main {
     outline-color: var(--text-secondary);
 }
 
-.name {
+.title {
     font-size: 2rem;
     font-weight: 700;
     letter-spacing: 0.05rem;
 }
 
-.title {
+.subtitle {
     font-size: 1.1rem;
     font-weight: 400;
     font-style: italic;
@@ -436,10 +437,10 @@ main {
 
 .card-subtitle {
     font-size: 0.7rem;
-    font-weight: 400;
+    font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    color: var(--text-secondary);
+    color: var(--accent);
 }
 
 .card-title {
@@ -663,7 +664,6 @@ main {
     opacity: 1;
     transform: translateX(-50%) translateY(0);
 }
-
 
 /* ── 12. RESPONSIVE BREAKPOINTS ────────────────────────────── */
 

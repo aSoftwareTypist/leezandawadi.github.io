@@ -1,0 +1,117 @@
+/* ── 11. NAVBAR / FOOTER ───────────────────────────────────── */
+#footer {
+    /* fixed at viewport bottom, full width so we can flex-center it */
+    position: fixed;
+    bottom: 1.25rem;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+    /* clicks pass through the wrapper */
+    z-index: 100;
+}
+
+.navbar {
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: var(--nav-width);
+    height: var(--nav-height);
+    padding: 1px 0.75rem 0 0.75rem;
+    border-radius: 1.25rem;
+    border: 1px solid rgba(13, 148, 136, .4);
+    /* refined glassmorphism */
+    background: transparent;
+    backdrop-filter: blur(20px) saturate(80%);
+    -webkit-backdrop-filter: blur(20px) saturate(80%);
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, .12),
+        0 1px 0 var(--bg-elevated) inset;
+    transition: width .35s ease;
+}
+
+.navbar:hover {
+    width: calc(var(--nav-width) + 2.5rem);
+}
+
+.nav-items {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 50%;
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: transform .2s ease;
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.nav-items:hover {
+    transform: translateY(-3px);
+}
+
+.nav-shadow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 90%;
+    border-radius: 50%;
+    transition: background-color .2s ease;
+}
+
+.nav-items:hover .nav-shadow {
+    background-color: rgba(13, 148, 136, .1);
+}
+
+.nav-icons {
+    width: 21px;
+    height: 21px;
+}
+
+/* tooltip appears above the icon */
+.nav-tooltip {
+    position: absolute;
+    bottom: calc(100% + 15px);
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    color: var(--text-secondary);
+    font-size: 0.72rem;
+    font-weight: 500;
+    background: var(--bg-elevated);
+    backdrop-filter: blur(50px) saturate(10%);
+    -webkit-backdrop-filter: blur(20px) saturate(10%);
+    box-shadow:
+        0 8px 15px rgba(0, 0, 0, 0.323),
+        0 1px 0 var(--bg-elevated) inset;
+    padding: 4px 9px;
+    border-radius: 6px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s ease, transform .2s ease;
+    z-index: 10;
+}
+
+/* downward arrow */
+.nav-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 4px solid transparent;
+    border-top-color: var(--bg-main);
+}
+
+.nav-items:hover .nav-tooltip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}

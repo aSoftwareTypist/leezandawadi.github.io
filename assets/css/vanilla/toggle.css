@@ -1,0 +1,80 @@
+/* ── 5. TOGGLE — 80s vertical stick switch ─────────────────── */
+
+/*
+  Up   (unchecked) = light theme — teal lever at top
+  Down (checked)   = dark theme  — lever slides down, slot darkens
+*/
+.toggle {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 0.5rem;
+}
+
+.switch {
+    font-size: 17px;
+    position: relative;
+    display: inline-block;
+    width: 1em;
+    height: 2.8em;
+    cursor: pointer;
+}
+
+.switch .chk {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* the slot / housing — inset so it looks recessed */
+.slider {
+    position: absolute;
+    inset: 0;
+    border-radius: 6px;
+    background: var(--bg-main);
+    box-shadow:
+        inset 0 3px 8px rgba(0, 0, 0, .6),
+        inset 0 -1px 3px rgba(255, 255, 255, .05);
+    transition: background .4s ease;
+}
+
+/* the lever — wider than the slot, giving the protruding bar look */
+.slider::before {
+    content: '';
+    position: absolute;
+    width: 2.5rem;
+    height: 0.5rem;
+    left: 50%;
+    top: 0.22em;
+    transform: translateX(-50%);
+    border-radius: 5px;
+
+    /* gradient gives it a top-lit 3D look */
+    background: linear-gradient(180deg,
+            color-mix(in srgb, var(--accent) 85%, white) 0%,
+            var(--accent) 40%,
+            color-mix(in srgb, var(--accent) 75%, black) 100%);
+    box-shadow:
+        0 4px 10px rgba(0, 0, 0, .4),
+        0 1px 0 rgba(255, 255, 255, .3) inset;
+    transition: top .38s cubic-bezier(.4, 0, .2, 1), background .4s ease;
+}
+
+/* checked = lever slides DOWN = dark theme */
+.chk:checked+.slider {
+    background: var(--bg-main);
+    box-shadow:
+        inset 0 3px 8px rgba(0, 0, 0, .6),
+        inset 0 -1px 3px rgba(255, 255, 255, .05);
+}
+
+.chk:checked+.slider::before {
+    top: calc(3.2em - 0.9em - 0.22em);
+    background: linear-gradient(180deg,
+            color-mix(in srgb, var(--accent) 85%, white) 0%,
+            var(--accent) 40%,
+            color-mix(in srgb, var(--accent) 75%, black) 100%);
+    box-shadow:
+        0 -4px 10px rgba(0, 0, 0, .45),
+        0 1px 0 rgba(255, 255, 255, .06) inset;
+}
